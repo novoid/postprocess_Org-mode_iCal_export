@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-01-30 14:08:34 vk>
+# Time-stamp: <2013-01-30 16:17:43 vk>
 
 
 ## TODO:
@@ -47,6 +47,7 @@ Calendar reminder VALARM is added.\n\
 \n\
 Please refer to README.org for further details.\n\
 \n\
+https://github.com/novoid/postprocess_Org-mode_iCal_export\n\
 \n\
 \n\
 :copyright: (c) 2013 by Karl Voit <tools@Karl-Voit.at>\n\

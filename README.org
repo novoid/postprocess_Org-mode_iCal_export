@@ -1,4 +1,4 @@
-## Time-stamp: <2013-01-30 16:15:04 vk>
+## Time-stamp: <2013-01-30 16:18:05 vk>
 ## -*- coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
@@ -12,6 +12,8 @@ location gets replaced with PRIVATE_SUMMARY as summary.
 
 Additionally, if REMINDER_REGEX finds reminders in tags, a Google
 Calendar reminder (VALARM) is added.
+
+Source: https://github.com/novoid/postprocess_Org-mode_iCal_export
 
 ** Why
 
