@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-01-30 16:17:43 vk>
+# Time-stamp: <2013-01-30 23:55:37 vk>
 
 
 ## TODO:
@@ -133,7 +133,7 @@ def generate_reminder_entries(reminderlist):
 
     for reminder in reminderlist:
         output += "BEGIN:VALARM\nACTION:DISPLAY\nDESCRIPTION:This is an event reminder\n"
-    output += "TRIGGER:-P0DT0H" + reminder.zfill(2) + "M0S\nEND:VALARM\n"
+        output += "TRIGGER:-P0DT0H" + reminder.zfill(2) + "M0S\nEND:VALARM\n"
 
     return output
 
