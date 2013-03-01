@@ -1,4 +1,4 @@
-## Time-stamp: <2013-01-30 16:18:05 vk>
+## Time-stamp: <2013-03-01 14:00:00 vk>
 ## -*- coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
@@ -14,6 +14,10 @@ Additionally, if REMINDER_REGEX finds reminders in tags, a Google
 Calendar reminder (VALARM) is added.
 
 Source: https://github.com/novoid/postprocess_Org-mode_iCal_export
+
+- *target group*: Privacy-concerned users of [[http://orgmode.org][Org-mode]] who want to
+  publish their free/busy list online
+- *skills necessary*: adding some minor Emacs settings
 
 ** Why
 
