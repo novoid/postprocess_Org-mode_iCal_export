@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-02-07 14:11:03 vk>
+# Time-stamp: <2013-05-21 11:53:16 vk>
 
 
 ## TODO:
@@ -30,7 +30,7 @@ REMINDER_REGEX = re.compile("^rem(\d\d?)$")
 
 PROG_VERSION_NUMBER = u"0.1"
 PROG_VERSION_DATE = u"2013-01-30"
-INVOCATION_TIME = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
+INVOCATION_TIME = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime())
 
 USAGE = u"\n\
     " + sys.argv[0] + u" -i <inputfile.ics> -o <outputfile.ics>\n\
