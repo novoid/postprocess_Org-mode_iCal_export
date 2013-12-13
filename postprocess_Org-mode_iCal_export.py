@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-12-13 20:58:35 vk>
+# Time-stamp: <2013-12-13 21:04:35 vk>
 
 
 ## TODO:
@@ -155,6 +155,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
     currentdescription = ""
     currentcategories = ""
     in_description = False
+    in_summary = False
     description_lines = 0
 
     with open(outputfilename, 'w') as output:
@@ -172,6 +173,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
                 count_events += 1
                 newline = line
                 in_description = False
+                in_summary = False
 
                 ## header is finished:
                 if parsing_header and not dryrun:
@@ -183,22 +185,26 @@ def handle_file(inputfilename, outputfilename, dryrun):
             ## store content fields:
             elif line.startswith('SUMMARY:'):
                 in_description = False
+                in_summary = True
                 if options.removesummarytimestamps:
                     ## removing any substrings enclosed in angle brackets (usually time-stamps):
                     currentsummary = TIMESTAMP_ROUGH_REGEX.sub('', line).replace("SUMMARY:  ", "SUMMARY: ")
                 else:
                     currentsummary = line
             elif line.startswith('DESCRIPTION:'):
+                in_summary = False
                 in_description = True
                 description_lines = 1
                 currentdescription = line
             elif line.startswith('CATEGORIES:'):
+                in_summary = False
                 in_description = False
                 currentcategories = line
 
             ## write completed event entry:
             elif line.startswith('END:VEVENT'):
 
+                in_summary = False
                 in_description = False
                 description_lines = 0
 
@@ -257,12 +263,14 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
             ## lines that are identical in output:
             else:
-                if not in_description:
-                    newline = line
-                else:
+                if in_description:
                     description_lines += 1
                     if description_lines <= MAX_DESCRIPTION_LINES:
                         currentdescription += line
+                elif in_summary:
+                    currentsummary += line
+                else:
+                    newline = line
 
             if parsing_header:
                 newline = line
