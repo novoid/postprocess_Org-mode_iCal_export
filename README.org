@@ -1,4 +1,4 @@
-## Time-stamp: <2013-03-01 14:03:25 vk>
+## Time-stamp: <2013-12-13 20:19:08 vk>
 ## -*- coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
@@ -13,6 +13,10 @@ location gets replaced with PRIVATE_SUMMARY as summary.
 Additionally, if REMINDER_REGEX finds reminders in tags, a Google
 Calendar reminder (VALARM) is added.
 
+With the optional parameter ~--remove-summary-timestamp~, time-stamps
+in summary lines get removed in order to get a better overview (narrow
+columns).
+
 Source: https://github.com/novoid/postprocess_Org-mode_iCal_export
 
 - *target group*: Privacy-concerned users of [[http://orgmode.org][Org-mode]] who want to
@@ -21,10 +25,10 @@ Source: https://github.com/novoid/postprocess_Org-mode_iCal_export
 
 ** Why
 
-My use case: I generate my iCalendar files with [[http://orgmode.org][Org-mode]] using its
+A common use case: generate iCalendar files with [[http://orgmode.org][Org-mode]] using its
 [[http://orgmode.org/manual/iCalendar-export.html][iCalendar-export]] for [[http://orgmode.org/worg/org-tutorials/org-google-sync.html][Google Calendar synchronization]]. Since Org-mode
-iCalendar export does not support reminders (yet), I add them using
-this script.
+iCalendar export does not support ~VALARM~ reminders (yet), I add them
+using this script.
 
 ** Example
 
@@ -44,13 +48,21 @@ days followed by script invocation in a shell:
 : 			    "-i " icspath "org-export.ics "
 : 			    "-o " icspath "agenda.ics "
 : 			    "--overwrite"
+:			    "--remove-summary-timestamp"
 : 			    )
 : 			   )
 :   )
 
-The resulting ~agenda.ics~ is linked to my webspace where Google
-Calendar is reading it periodically. This way, my calendar and its
-reminders are visible online (and on my Android phone).
+The resulting ~agenda.ics~ could be put on a webspace where Google
+Calendar is reading it periodically. This way, the calendar data and
+its reminders are visible online (and on the Android phone).
+
+With 2013-12, I switched my workflow: I periodically re-generate my
+ageda using ~my-export-agenda~ from above, synchronize ~agenda.ics~
+using [[https://play.google.com/store/apps/details?id%3Deu.kowalczuk.rsync4android&hl%3Den][rsync backup for Android]] onto my phone, and use [[https://play.google.com/store/apps/details?id%3Dtk.drlue.icalimportexport][iCal
+Import/Export 2.0]] to import the data to a local (non-synchronized)
+calendar. This way, I avoid putting my calendar data into the cloud
+and keep my privacy.
 
 ** Advantages
 

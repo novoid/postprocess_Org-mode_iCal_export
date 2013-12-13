@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-05-21 11:53:16 vk>
+# Time-stamp: <2013-12-13 20:12:16 vk>
 
 
 ## TODO:
@@ -27,6 +27,8 @@ import logging
 from optparse import OptionParser
 
 REMINDER_REGEX = re.compile("^rem(\d\d?)$")
+
+TIMESTAMP_ROUGH_REGEX = re.compile("<.*>")
 
 PROG_VERSION_NUMBER = u"0.1"
 PROG_VERSION_DATE = u"2013-01-30"
@@ -58,6 +60,9 @@ parser.add_option("-i", "--input", dest="inputfilename",
 
 parser.add_option("-o", "--output", dest="outputfilename",
                   help="(path and) name of the iCalendar file where the result is written to", metavar="FILE")
+
+parser.add_option("--remove-summary-timestamps", dest="removesummarytimestamps", action="store_true",
+                  help="Removes any time-stamps found in summary line descriptions.")
 
 parser.add_option("--dryrun", dest="dryrun", action="store_true",
                   help="Does not make any changes to the file system. Useful for testing behavior.")
@@ -173,7 +178,11 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
             ## store content fields:
             elif line.startswith('SUMMARY:'):
-                currentsummary = line
+                if options.removesummarytimestamps:
+                    ## removing any substrings enclosed in angle brackets (usually time-stamps):
+                    currentsummary = TIMESTAMP_ROUGH_REGEX.sub('', line).replace("SUMMARY:  ", "SUMMARY: ")
+                else:
+                    currentsummary = line
             elif line.startswith('DESCRIPTION:'):
                 currentdescription = line
             elif line.startswith('CATEGORIES:'):
