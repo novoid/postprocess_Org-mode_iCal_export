@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-12-13 20:12:16 vk>
+# Time-stamp: <2013-12-13 20:58:35 vk>
 
 
 ## TODO:
 ## * fix parts marked with «FIXXME»
+## * fix: all lines with no iCal tag followed by ':' are extended summary lines and should follow the summary line
 
 
 ## overrules enything else and shows only PRIVATE_SUMMARY and no location
 PRIVATE_TAG = 'private'
 PRIVATE_SUMMARY = 'busy'              ## in case no special tag is found
-
+MAX_DESCRIPTION_LINES = 10            ## number of description lines (of input file) added to output
 
 ## ===================================================================== ##
 ##  You might not want to modify anything below this line if you do not  ##
@@ -153,6 +154,8 @@ def handle_file(inputfilename, outputfilename, dryrun):
     currentsummary = ""
     currentdescription = ""
     currentcategories = ""
+    in_description = False
+    description_lines = 0
 
     with open(outputfilename, 'w') as output:
 
@@ -168,6 +171,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
                 logging.debug("new VEVENT .............................................")
                 count_events += 1
                 newline = line
+                in_description = False
 
                 ## header is finished:
                 if parsing_header and not dryrun:
@@ -178,18 +182,25 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
             ## store content fields:
             elif line.startswith('SUMMARY:'):
+                in_description = False
                 if options.removesummarytimestamps:
                     ## removing any substrings enclosed in angle brackets (usually time-stamps):
                     currentsummary = TIMESTAMP_ROUGH_REGEX.sub('', line).replace("SUMMARY:  ", "SUMMARY: ")
                 else:
                     currentsummary = line
             elif line.startswith('DESCRIPTION:'):
+                in_description = True
+                description_lines = 1
                 currentdescription = line
             elif line.startswith('CATEGORIES:'):
+                in_description = False
                 currentcategories = line
 
             ## write completed event entry:
             elif line.startswith('END:VEVENT'):
+
+                in_description = False
+                description_lines = 0
 
                 ## entry is finished
                 if newentry and not dryrun:
@@ -246,12 +257,17 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
             ## lines that are identical in output:
             else:
-                newline = line
+                if not in_description:
+                    newline = line
+                else:
+                    description_lines += 1
+                    if description_lines <= MAX_DESCRIPTION_LINES:
+                        currentdescription += line
 
             if parsing_header:
                 newline = line
 
-            if newline and not dryrun:
+            if newline and not dryrun and not in_description:
                 #output.write(newline + '\n')
                 newentry += newline + '\n'
 
