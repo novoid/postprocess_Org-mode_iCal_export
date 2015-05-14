@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2015-05-14 15:33:23 vk>
+# Time-stamp: <2015-05-14 15:34:19 vk>
 
 
 ## TODO:
@@ -56,7 +56,7 @@ Please refer to README.org for further details.\n\
 https://github.com/novoid/postprocess_Org-mode_iCal_export\n\
 \n\
 \n\
-:copyright: (c) 2013 by Karl Voit <tools@Karl-Voit.at>\n\
+:copyright: (c) 2013 or later by Karl Voit <tools@Karl-Voit.at>\n\
 :license: GPL v3 or any later version\n\
 :bugreports: <tools@Karl-Voit.at>\n\
 :version: " + PROG_VERSION_NUMBER + " from " + PROG_VERSION_DATE + "\n"
