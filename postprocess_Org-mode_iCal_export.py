@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2015-05-14 16:04:46 vk>
+# Time-stamp: <2015-05-14 16:05:15 vk>
 
 
 ## TODO:
@@ -33,7 +33,7 @@ TIMESTAMP_ROUGH_REGEX = re.compile("<.*>")
 DTEND_REGEX = re.compile("\nDTEND(;VALUE=DATE)?:(.+)\n")
 UID_REGEX = re.compile("UID:(.+)")
 
-PROG_VERSION_NUMBER = u"0.1"
+PROG_VERSION_NUMBER = u"0.2"
 PROG_VERSION_DATE = u"2015-05-14"
 INVOCATION_TIME = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime())
 INVOCATION_DAY_STR = INVOCATION_TIME[:10]
