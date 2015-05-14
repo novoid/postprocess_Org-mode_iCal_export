@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2013-12-13 21:04:35 vk>
+# Time-stamp: <2015-05-14 14:18:11 vk>
 
 
 ## TODO:
@@ -10,8 +10,8 @@
 
 ## overrules enything else and shows only PRIVATE_SUMMARY and no location
 PRIVATE_TAG = 'private'
-PRIVATE_SUMMARY = 'busy'              ## in case no special tag is found
-MAX_DESCRIPTION_LINES = 10            ## number of description lines (of input file) added to output
+PRIVATE_SUMMARY = 'busy'              # in case no special tag is found
+MAX_DESCRIPTION_LINES = 10            # number of description lines (of input file) added to output
 
 ## ===================================================================== ##
 ##  You might not want to modify anything below this line if you do not  ##
@@ -145,7 +145,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
     logging.debug("--------------------------------------------")
     logging.info(sys.argv[0] + "   ... called with ... ")
-    logging.info("input file \"" + inputfilename + "\"  ... and ...")
+    logging.info("inputfile file \"" + inputfilename + "\"  ... and ...")
     logging.info("output file \"" + outputfilename + "\"")
 
     parsing_header = True
@@ -160,8 +160,8 @@ def handle_file(inputfilename, outputfilename, dryrun):
 
     with open(outputfilename, 'w') as output:
 
-        input = open(inputfilename, 'r')
-        for rawline in input:
+        inputfile = open(inputfilename, 'r')
+        for rawline in inputfile:
 
             newline = ""
             line = rawline.strip()
@@ -230,7 +230,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
                         logging.debug("newlocation: [%s]" % newlocation)
                         logging.debug("newcategories: [%s]" % newcategories)
 
-                    output.write(newentry)  ## entry so far without description, location, or end
+                    output.write(newentry)  # entry so far without description, location, or end
 
                     output.write(newsummary + '\n')
 
@@ -259,7 +259,7 @@ def handle_file(inputfilename, outputfilename, dryrun):
                     newentry = ""
 
             elif line.startswith('END:VCALENDAR'):
-                    output.write(line + '\n')
+                output.write(line + '\n')
 
             ## lines that are identical in output:
             else:
