@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Time-stamp: <2022-03-30 10:58:17 vk>
+# Time-stamp: <2024-03-23 13:40:51 vk>
 
 
 # TODO:
@@ -80,6 +80,9 @@ parser.add_option("--remove-summary-timestamps", dest="removesummarytimestamps",
 
 parser.add_option("--obfuscate", dest="obfuscateeverything", action="store_true",
                   help="Hides summaries, descriptions, and categories. Generates a simple free/busy iCalendar file.")
+
+parser.add_option("--wholedayeventsarefreewhenobfuscate", dest="wholedayeventsarefreewhenobfuscate", action="store_true",
+                  help="If set (and --obfuscate is also set), whole day events (no time but associated to a day) are not exported.")
 
 parser.add_option("--dryrun", dest="dryrun", action="store_true",
                   help="Does not make any changes to the file system. Useful for testing behavior.")
@@ -167,7 +170,7 @@ def dtend_is_not_in_past(entry):
         return True
 
 
-def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything):
+def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything, wholedayeventsarefreewhenobfuscate):
     """handles inputfile and generates outputfile"""
 
     logging.debug("--------------------------------------------")
@@ -343,10 +346,15 @@ def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything):
                         elif in_summary:
                             currentsummary += line
                         else:
-                            newline = line
+                            # mark entry as non-busy when: (1) whole day event (2) obfuscate and (3) corresponding parameter set:
+                            if line.startswith('DTEND;VALUE=DATE:') and \
+                               obfuscate_everything and \
+                               wholedayeventsarefreewhenobfuscate:
+                                newline = line + '\nTRANSP:TRANSPARENT'
+                            else:
+                                newline = line
 
                 if newline and not dryrun and not in_description:
-                    # output.write(newline + '\n')
                     newentry += newline + '\n'
 
         return count_events, omitted_events, omitted_todos
@@ -389,7 +397,11 @@ def main():
         else:
             error_exit(4, "Sorry, output file \"%s\" already exists and you did not use the overwrite option \"--overwrite\"." % options.outputfilename)
 
-    count_events, omitted_events, omitted_todos = handle_file(options.inputfilename, options.outputfilename, dryrun, options.obfuscateeverything)
+    count_events, omitted_events, omitted_todos = handle_file(options.inputfilename,
+                                                              options.outputfilename,
+                                                              dryrun,
+                                                              options.obfuscateeverything,
+                                                              options.wholedayeventsarefreewhenobfuscate)
 
     logging.info("successfully finished converting %s events." % count_events)
     if omitted_events > 0:
