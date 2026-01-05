@@ -1,4 +1,4 @@
-## Time-stamp: <2015-05-14 16:09:32 vk>
+## Time-stamp: <2026-01-05 14:18:22 vk>
 ## -*- coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
@@ -8,13 +8,19 @@ This Python script converts a given [[https://en.wikipedia.org/wiki/ICalendar][i
 [[http://orgmode.org][Org-mode]].  
 
 Entries whose UIDs is identical to already known UIDs are omitted.
-Also omitted are entries whose DTEND date is in the past.
+Also omitted are entries whose =DTEND= date is in the past.
 
-If the tag defined in PRIVATE_TAG is found, description, summary, and
-location gets replaced with PRIVATE_SUMMARY as summary.
+If the tag defined in =PRIVATE_TAG= (defined in the Python script) is
+found, description, summary, and location gets replaced with
+=PRIVATE_SUMMARY= as summary.
 
-Additionally, if REMINDER_REGEX finds reminders in tags, a Google
-Calendar reminder (VALARM) is added.
+If a tag defined in =NONBUSY_TAGS= (list; defined in the Python
+script) is found, the iCal entry is marked as =TRANSP:TRANSPARENT=.
+This results in an entry in the calendar which is marked as
+non-blocked/non-busy/free.
+
+Additionally, if =REMINDER_REGEX= finds reminders in tags, a Google
+Calendar reminder (=VALARM=) is added.
 
 With the optional parameter ~--remove-summary-timestamp~, time-stamps
 in summary lines get removed in order to get a better overview (narrow

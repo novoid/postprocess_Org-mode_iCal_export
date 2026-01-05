@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-PROG_VERSION = "Time-stamp: <2026-01-05 13:20:54 vk>"
+PROG_VERSION = "Time-stamp: <2026-01-05 13:47:25 vk>"
 
 
 # TODO:
@@ -12,6 +12,7 @@ PROG_VERSION = "Time-stamp: <2026-01-05 13:20:54 vk>"
 # overrules enything else and shows only PRIVATE_SUMMARY and no location
 PRIVATE_TAG = 'private'
 PRIVATE_SUMMARY = 'busy'              # in case no special tag is found
+NONBUSY_TAGS = ['free']               # list of tags whose entries are included and marked as non-busy in the ical file
 MAX_DESCRIPTION_LINES = 10            # number of description lines (of input file) added to output
 
 # ===================================================================== #
@@ -127,6 +128,7 @@ def parse_categories_for_known_tags(categories):
     # logging.debug("catlist [%s]" % str(catlist) )
 
     is_private = False
+    is_free = False
     reminder = []
 
     if catlist:
@@ -136,6 +138,8 @@ def parse_categories_for_known_tags(categories):
 
             if PRIVATE_TAG == tag:
                 is_private = True
+            elif tag in NONBUSY_TAGS:
+                is_free = True
 
             matching_reminder = re.match(REMINDER_REGEX, tag)
             if matching_reminder:
@@ -144,7 +148,7 @@ def parse_categories_for_known_tags(categories):
                 logging.debug("found reminder in tag [%s] with [%s] minutes" % (tag, reminder_minutes))
                 reminder.append(reminder_minutes)
 
-    return reminder, is_private
+    return reminder, is_private, is_free
 
 
 def generate_reminder_entries(reminderlist):
@@ -287,7 +291,7 @@ def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything, who
                                 known_uids.append(currentuid)
 
                                 # parse categories for known substrings
-                                reminder, is_private = \
+                                reminder, is_private, is_free = \
                                     parse_categories_for_known_tags(currentcategories)
 
                                 if is_private or obfuscate_everything:
@@ -312,6 +316,10 @@ def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything, who
                                 else:
                                     output.write('UID:' + currentuid + '\n')
 
+                                if is_free:
+                                    ## mark current ical entry as a non-blocking/non-busy/free entry:
+                                    output.write('TRANSP:TRANSPARENT\n')
+                                    
                                 output.write(newsummary + '\n')
 
                                 # if found, write location:
