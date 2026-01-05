@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-23 13:40:51 vk>
+PROG_VERSION = "Time-stamp: <2026-01-05 13:20:54 vk>"
 
 
 # TODO:
@@ -35,8 +35,8 @@ TIMESTAMP_ROUGH_REGEX = re.compile("<.*>")
 DTEND_REGEX = re.compile("\nDTEND(;VALUE=DATE)?:(.+)\n")
 UID_REGEX = re.compile("UID:(.+)")
 
-PROG_VERSION_NUMBER = "0.2"
-PROG_VERSION_DATE = "2015-05-14"
+PROG_VERSION_NUMBER = "0.3"
+PROG_VERSION_DATE = PROG_VERSION[13:23]
 INVOCATION_TIME = time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime())
 INVOCATION_DAY_STR = INVOCATION_TIME[:10]
 INVOCATION_DAY_SHORTSTR = time.strftime("%Y%m%d", time.localtime())
