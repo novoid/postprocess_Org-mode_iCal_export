@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-PROG_VERSION = "Time-stamp: <2026-01-05 13:47:25 vk>"
+PROG_VERSION = "Time-stamp: <2026-01-12 13:14:20 rise>"
 
 
 # TODO:
@@ -11,7 +11,8 @@ PROG_VERSION = "Time-stamp: <2026-01-05 13:47:25 vk>"
 
 # overrules enything else and shows only PRIVATE_SUMMARY and no location
 PRIVATE_TAG = 'private'
-PRIVATE_SUMMARY = 'busy'              # in case no special tag is found
+PRIVATE_SUMMARY = 'busy'              # anonymous summary sting for busy entries
+FREE_SUMMARY = 'free'                 # anonymous summary sting for free entries
 NONBUSY_TAGS = ['free']               # list of tags whose entries are included and marked as non-busy in the ical file
 MAX_DESCRIPTION_LINES = 10            # number of description lines (of input file) added to output
 
@@ -296,7 +297,10 @@ def handle_file(inputfilename, outputfilename, dryrun, obfuscate_everything, who
 
                                 if is_private or obfuscate_everything:
                                     logging.debug("is_private is True")
-                                    newsummary = 'SUMMARY:' + PRIVATE_SUMMARY
+                                    if is_free:
+                                        newsummary = 'SUMMARY:' + FREE_SUMMARY
+                                    else:
+                                        newsummary = 'SUMMARY:' + PRIVATE_SUMMARY
                                     newlocation = ""
                                     newcategories = ""
                                     newdescription = ""
